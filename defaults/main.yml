@@ -1,0 +1,25 @@
+###  vars file for ansible-zabbix-agent
+
+# Server Registration Parameters
+VAR_Zabbix40AG_serverregist : "yes"
+
+# Installation variables
+VAR_Zabbix40AG_APITempPath: /tmp/zbx_api
+
+# Server variables
+VAR_Zabbix40AG_Username: Admin
+VAR_Zabbix40AG_Password: zabbix
+VAR_Zabbix40AG_Server :
+VAR_Zabbix40AG_ServerAddress: http://192.168.1.1:80/zabbix/
+
+# Host configuration variables
+VAR_Zabbix40AG_Hostname: "{{ ansible_hostname }}"
+VAR_Zabbix40AG_DisplayName: ""
+VAR_Zabbix40AG_HostIP: "{{ ansible_host }}"
+VAR_Zabbix40AG_AgentPort: 10050
+VAR_Zabbix40AG_SnmpPort: 161
+
+VAR_Zabbix40AG_HostGroups:
+    - Linux servers
+
+VAR_Zabbix40AG_Templates:  ['Template OS Linux']

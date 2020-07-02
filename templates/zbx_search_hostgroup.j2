@@ -1,0 +1,17 @@
+{
+    "jsonrpc":"2.0",
+    "auth":"ZBX_AUTH_TOKEN",
+    "method":"hostgroup.get",
+    "params": {
+        "output": "extend",
+        "filter": {
+            "name": [
+{% for group in VAR_Zabbix40AG_HostGroups %}
+                "{{group}}"{% if not loop.last%},{% endif %}
+{% endfor %}
+            ]
+        }
+    },
+    "id": 1
+}
+

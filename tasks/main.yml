@@ -1,0 +1,15 @@
+---
+
+
+# Playbook 実行時に取得したOS の種類を表示する
+  - name: display os distribution
+    debug : msg="OS distribution is {{ ansible_distribution }}."
+
+# サポートするOS 以外の種類であった場合にエラーメッセージを表示する
+  - name: check os distribution
+    fail : msg="This OS is not supported."
+    when: ansible_os_family not in ['RedHat']
+
+# 実行するPlaybookを選択
+  - import_tasks: 'RedHat.yml'
+    when: ansible_os_family == 'RedHat'

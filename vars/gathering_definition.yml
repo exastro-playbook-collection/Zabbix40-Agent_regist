@@ -1,0 +1,6 @@
+---
+command:
+  - ls -l /var/log/zabbix/*agent*
+  - ls -l /tmp
+file:
+  - /var/log/zabbix/zabbix_agentd.log

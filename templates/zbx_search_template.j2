@@ -1,0 +1,19 @@
+{
+    "jsonrpc":"2.0",
+    "auth":"ZBX_AUTH_TOKEN",
+    "method":"template.get",
+    "params": {
+        "output": "extend",
+        "filter": {
+            "host": [
+{% if VAR_Zabbix40AG_Templates != None %}
+{% for template in VAR_Zabbix40AG_Templates %}
+                "{{ template }}"{% if not loop.last%},{% endif %}
+{% endfor %}
+{% endif %}
+            ]
+        }
+    },
+    "id": 1
+}
+

@@ -1,0 +1,34 @@
+---
+- name: create json dir
+  local_action: file path={{ VAR_Zabbix40AG_APITempPath }} owner=nobody group=nobody mode=0755 state=directory
+
+- name: create login json
+  local_action: template src=zbx_auth_login.j2 dest={{ VAR_Zabbix40AG_APITempPath }}/login.{{ VAR_Zabbix40AG_HostIP }}.json
+
+- name: create create_hostgroup json
+  local_action: template src=zbx_create_hostgroup.j2 dest={{ VAR_Zabbix40AG_APITempPath }}/create_hostgroup.{{ item }}.{{ VAR_Zabbix40AG_HostIP }}.json
+  with_items:
+    - "{{ VAR_Zabbix40AG_HostGroups }}"
+  run_once: true
+
+- name: create hostgroup json
+  local_action: template src=zbx_search_hostgroup.j2 dest={{ VAR_Zabbix40AG_APITempPath }}/hostgroup.{{ VAR_Zabbix40AG_HostIP }}.json
+
+- name: create templates json
+  local_action: template src=zbx_search_template.j2 dest={{ VAR_Zabbix40AG_APITempPath }}/template.{{ VAR_Zabbix40AG_HostIP }}.json
+
+- name: create host adding json
+  local_action: template src=zbx_addhost.j2 dest={{ VAR_Zabbix40AG_APITempPath }}/add_host.{{ VAR_Zabbix40AG_HostIP }}.json
+
+- name: create logout json
+  local_action: template src=zbx_auth_logout.j2 dest={{ VAR_Zabbix40AG_APITempPath }}/logout.{{ VAR_Zabbix40AG_HostIP }}.json
+
+- block:
+    - name: execute api
+      local_action: script ./zbx_addhost.sh "{{ VAR_Zabbix40AG_HostIP }}" "{{ VAR_Zabbix40AG_ServerAddress }}" "{{ VAR_Zabbix40AG_APITempPath }}" "{{ VAR_Zabbix40AG_Templates|length }}"
+
+  always:
+    - name: delete jsons
+      local_action: file path={{ VAR_Zabbix40AG_APITempPath }} state=absent
+      run_once: true
+
